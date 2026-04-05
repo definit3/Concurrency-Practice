@@ -15,10 +15,16 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Fixing race conditions using `synchronized` blocks
 - Using `join` to wait for threads to finish
 
+### Explicit Locks (`java.util.concurrent.locks`)
+- `ReentrantLock` — basic usage, reentrancy with nested method calls
+- `lock()`, `tryLock()` with timeout, `lockInterruptibly()`, `unlock()`
+- Bank account withdrawal demo showing `tryLock` with timeout to avoid indefinite blocking
+
 ## Project Structure
 
 ```
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
-└── synchronization/    # Shared state, race conditions, synchronized blocks
+├── synchronization/    # Shared state, race conditions, synchronized blocks
+└── explicit/lock/      # ReentrantLock, tryLock, lockInterruptibly
 ```
