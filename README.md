@@ -29,5 +29,5 @@ src/main/java/com/definit3/concurrency/
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
 └── explicit/
     ├── lock/           # ReentrantLock, tryLock, lockInterruptibly
-    └── unfairlock/     # Fair vs unfair lock ordering
+    └── lockfairness/   # Fair vs unfair lock ordering
 ```

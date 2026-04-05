@@ -1,4 +1,4 @@
-package com.definit3.concurrency.explicit.unfairlock;
+package com.definit3.concurrency.explicit.lockfairness;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
