@@ -20,6 +20,7 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - `lock()`, `tryLock()` with timeout, `lockInterruptibly()`, `unlock()`
 - Bank account withdrawal demo showing `tryLock` with timeout to avoid indefinite blocking
 - Fair vs unfair lock — `ReentrantLock(true)` for FIFO ordering vs default unfair mode
+- `ReentrantReadWriteLock` — concurrent reads with exclusive write locks
 
 ## Project Structure
 
@@ -29,5 +30,6 @@ src/main/java/com/definit3/concurrency/
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
 └── explicit/
     ├── lock/           # ReentrantLock, tryLock, lockInterruptibly
-    └── lockfairness/   # Fair vs unfair lock ordering
+    ├── lockfairness/   # Fair vs unfair lock ordering
+    └── readwritelock/  # ReentrantReadWriteLock, concurrent reads with exclusive writes
 ```
