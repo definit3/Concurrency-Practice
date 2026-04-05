@@ -19,6 +19,7 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - `ReentrantLock` — basic usage, reentrancy with nested method calls
 - `lock()`, `tryLock()` with timeout, `lockInterruptibly()`, `unlock()`
 - Bank account withdrawal demo showing `tryLock` with timeout to avoid indefinite blocking
+- Fair vs unfair lock — `ReentrantLock(true)` for FIFO ordering vs default unfair mode
 
 ## Project Structure
 
@@ -26,5 +27,7 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
-└── explicit/lock/      # ReentrantLock, tryLock, lockInterruptibly
+└── explicit/
+    ├── lock/           # ReentrantLock, tryLock, lockInterruptibly
+    └── unfairlock/     # Fair vs unfair lock ordering
 ```
