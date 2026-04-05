@@ -15,6 +15,11 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Fixing race conditions using `synchronized` blocks
 - Using `join` to wait for threads to finish
 
+### CyclicBarrier
+- Synchronizing multiple threads at a common barrier point
+- Barrier action (runnable triggered when all threads arrive), `await`, `reset`
+- Difference from `CountDownLatch` — reusable and threads wait for each other
+
 ### CountDownLatch
 - Waiting for multiple services to finish using `Future.get` vs `CountDownLatch`
 - `countDown`, `await` with timeout
@@ -44,6 +49,7 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
+├── cyclicbarrier/       # CyclicBarrier, barrier action, reset
 ├── countdownlatch/      # CountDownLatch, await, countDown
 ├── executorframework/   # ExecutorService, Future, Callable, ScheduledExecutor
 ├── threadcommunication/ # wait, notify, producer-consumer
