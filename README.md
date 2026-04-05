@@ -15,6 +15,10 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Fixing race conditions using `synchronized` blocks
 - Using `join` to wait for threads to finish
 
+### CountDownLatch
+- Waiting for multiple services to finish using `Future.get` vs `CountDownLatch`
+- `countDown`, `await` with timeout
+
 ### Executor Framework
 - Raw threads vs `ExecutorService` — performance comparison with thread pools
 - `Executors.newFixedThreadPool`, `newSingleThreadExecutor`, `newScheduledThreadPool`
@@ -40,6 +44,7 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
+├── countdownlatch/      # CountDownLatch, await, countDown
 ├── executorframework/   # ExecutorService, Future, Callable, ScheduledExecutor
 ├── threadcommunication/ # wait, notify, producer-consumer
 └── explicit/
