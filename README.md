@@ -15,6 +15,14 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Fixing race conditions using `synchronized` blocks
 - Using `join` to wait for threads to finish
 
+### Executor Framework
+- Raw threads vs `ExecutorService` — performance comparison with thread pools
+- `Executors.newFixedThreadPool`, `newSingleThreadExecutor`, `newScheduledThreadPool`
+- `Future` — `get`, `isDone`, `cancel`, `isCancelled`, timeout with `get(timeout, unit)`
+- `Callable` vs `Runnable` with futures
+- `invokeAll` with timeout, `invokeAny`
+- `ScheduledExecutorService` — `schedule`, `scheduleAtFixedRate`, `scheduleWithFixedDelay`
+
 ### Thread Communication
 - Producer-Consumer using `wait` and `notify` on a shared resource
 - Guarded blocks to coordinate between threads without busy waiting
@@ -32,6 +40,7 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
+├── executorframework/   # ExecutorService, Future, Callable, ScheduledExecutor
 ├── threadcommunication/ # wait, notify, producer-consumer
 └── explicit/
     ├── lock/           # ReentrantLock, tryLock, lockInterruptibly
