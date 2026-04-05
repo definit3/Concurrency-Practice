@@ -10,13 +10,15 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - `sleep`, `yield`, `interrupt`
 - Daemon threads
 
-### Synchronization _(in progress)_
+### Synchronization
 - Race condition demo with a shared `Counter`
+- Fixing race conditions using `synchronized` blocks
+- Using `join` to wait for threads to finish
 
 ## Project Structure
 
 ```
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
-└── synchronization/    # Shared state, race conditions
+└── synchronization/    # Shared state, race conditions, synchronized blocks
 ```
