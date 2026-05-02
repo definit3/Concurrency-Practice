@@ -49,17 +49,25 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Fair vs unfair lock — `ReentrantLock(true)` for FIFO ordering vs default unfair mode
 - `ReentrantReadWriteLock` — concurrent reads with exclusive write locks
 
+### File Read/Write with Offset (Rubrik-style problem)
+- Simulates a file abstraction with `read(offset, length)` and `write(offset, insert)` operations
+- File content backed by `StringBuilder` for efficient mutable operations
+- Thread-safe using `ReentrantReadWriteLock` — multiple concurrent readers, exclusive writer
+- `lock()` called before `try` block with `unlock()` in `finally` to prevent `IllegalMonitorStateException`
+- Debug logging per thread showing lock acquisition, release, before/after state on writes
+
 ## Project Structure
 
 ```
 src/main/java/com/definit3/concurrency/
 ├── basic/              # Thread creation, lifecycle, priorities, daemon
 ├── synchronization/    # Shared state, race conditions, synchronized blocks
-├── completablefuture/   # supplyAsync, thenApply, allOf, orTimeout, exceptionally
-├── cyclicbarrier/       # CyclicBarrier, barrier action, reset
-├── countdownlatch/      # CountDownLatch, await, countDown
-├── executorframework/   # ExecutorService, Future, Callable, ScheduledExecutor
-├── threadcommunication/ # wait, notify, producer-consumer
+├── completablefuture/  # supplyAsync, thenApply, allOf, orTimeout, exceptionally
+├── cyclicbarrier/      # CyclicBarrier, barrier action, reset
+├── countdownlatch/     # CountDownLatch, await, countDown
+├── executorframework/  # ExecutorService, Future, Callable, ScheduledExecutor
+├── threadcommunication/# wait, notify, producer-consumer
+├── filereadwrite/      # Thread-safe file read/write with offset using ReentrantReadWriteLock
 └── explicit/
     ├── lock/           # ReentrantLock, tryLock, lockInterruptibly
     ├── lockfairness/   # Fair vs unfair lock ordering
