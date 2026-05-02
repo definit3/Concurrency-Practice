@@ -65,6 +65,16 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Debug logging per thread: lock acquire/release, operation type (APPEND, INSERT, DELETED), list size
 - `DataStructureMain` tests all thread types concurrently using `ExecutorService` + `CountDownLatch` start gate
 
+### Political Bathroom Problem
+- Single bathroom shared by Democrats and Republicans with a capacity of 3
+- No mixed occupancy allowed — bathroom must be pure Democrat or pure Republican at all times
+- `ReentrantLock` + `Condition` for mutual exclusion and waiting
+- `canOccupy(party)` encapsulates all entry logic: same-party capacity check, opposite-party empty-bathroom check
+- Anti-starvation: `sameOccupiedCounter` tracks consecutive same-party entries; capped at 5 when opposite party is waiting
+- `waitingRepublicanCount` / `waitingDemocratCount` track actual waiters — cap only enforced when opposite party has real waiters, preventing indefinite blocking when opposite party is absent
+- Sleep (bathroom use) happens outside the lock; try-finally guarantees lock re-acquisition before cleanup
+- Debug logging shows WAITING / ENTER / EXIT with full state: occupied count, current party, consecutive counter, both waiting counts
+
 ### Multi-Threaded Task Scheduler
 - Supports one-time (ad-hoc), fixed-rate, and fixed-delay recurring task scheduling
 - Three-layer architecture: user thread → scheduler thread → worker thread pool
@@ -89,6 +99,7 @@ src/main/java/com/definit3/concurrency/
 ├── filereadwrite/            # Thread-safe file read/write with offset using ReentrantReadWriteLock
 ├── concurrentdatastructure/  # Searcher/Inserter/Deleter with ReadWriteLock + mutex
 ├── taskscheduler/            # Multi-threaded task scheduler: one-time, fixed-rate, fixed-delay
+├── politicalbathroom/        # Political bathroom problem: categorical exclusion with anti-starvation
 └── explicit/
     ├── lock/                 # ReentrantLock, tryLock, lockInterruptibly
     ├── lockfairness/         # Fair vs unfair lock ordering
