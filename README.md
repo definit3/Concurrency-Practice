@@ -56,20 +56,30 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - `lock()` called before `try` block with `unlock()` in `finally` to prevent `IllegalMonitorStateException`
 - Debug logging per thread showing lock acquisition, release, before/after state on writes
 
+### Concurrent Data Structure (Searcher / Inserter / Deleter problem)
+- Classic three-thread-type problem: searchers, inserters, deleters on a shared list
+- Searchers run fully concurrently with each other and with inserters (`readLock`)
+- Inserters are mutually exclusive with each other (`ReentrantLock` mutex) but allow parallel searches
+- Deleters are fully exclusive — block all searches and inserts (`writeLock`)
+- Lock design: `readLock` shared by search + insert; `writeLock` exclusive to delete; `mutex` serialises inserts
+- Debug logging per thread: lock acquire/release, operation type (APPEND, INSERT, DELETED), list size
+- `DataStructureMain` tests all thread types concurrently using `ExecutorService` + `CountDownLatch` start gate
+
 ## Project Structure
 
 ```
 src/main/java/com/definit3/concurrency/
-├── basic/              # Thread creation, lifecycle, priorities, daemon
-├── synchronization/    # Shared state, race conditions, synchronized blocks
-├── completablefuture/  # supplyAsync, thenApply, allOf, orTimeout, exceptionally
-├── cyclicbarrier/      # CyclicBarrier, barrier action, reset
-├── countdownlatch/     # CountDownLatch, await, countDown
-├── executorframework/  # ExecutorService, Future, Callable, ScheduledExecutor
-├── threadcommunication/# wait, notify, producer-consumer
-├── filereadwrite/      # Thread-safe file read/write with offset using ReentrantReadWriteLock
+├── basic/                    # Thread creation, lifecycle, priorities, daemon
+├── synchronization/          # Shared state, race conditions, synchronized blocks
+├── completablefuture/        # supplyAsync, thenApply, allOf, orTimeout, exceptionally
+├── cyclicbarrier/            # CyclicBarrier, barrier action, reset
+├── countdownlatch/           # CountDownLatch, await, countDown
+├── executorframework/        # ExecutorService, Future, Callable, ScheduledExecutor
+├── threadcommunication/      # wait, notify, producer-consumer
+├── filereadwrite/            # Thread-safe file read/write with offset using ReentrantReadWriteLock
+├── concurrentdatastructure/  # Searcher/Inserter/Deleter with ReadWriteLock + mutex
 └── explicit/
-    ├── lock/           # ReentrantLock, tryLock, lockInterruptibly
-    ├── lockfairness/   # Fair vs unfair lock ordering
-    └── readwritelock/  # ReentrantReadWriteLock, concurrent reads with exclusive writes
+    ├── lock/                 # ReentrantLock, tryLock, lockInterruptibly
+    ├── lockfairness/         # Fair vs unfair lock ordering
+    └── readwritelock/        # ReentrantReadWriteLock, concurrent reads with exclusive writes
 ```
