@@ -65,6 +65,16 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Debug logging per thread: lock acquire/release, operation type (APPEND, INSERT, DELETED), list size
 - `DataStructureMain` tests all thread types concurrently using `ExecutorService` + `CountDownLatch` start gate
 
+### Multi-Threaded Task Scheduler
+- Supports one-time (ad-hoc), fixed-rate, and fixed-delay recurring task scheduling
+- Three-layer architecture: user thread → scheduler thread → worker thread pool
+- `PriorityQueue<ScheduledTask>` (min-heap by `nextExecutionTime`) as the core data structure
+- `ReentrantLock` + `Condition` for thread-safe queue access and timed waiting (`condition.await(delay)`)
+- `condition.signalAll()` on enqueue wakes the scheduler thread immediately for earlier-than-current-head tasks
+- **FIXED_RATE**: next run = last scheduled time + period (clock-based, independent of task duration)
+- **FIXED_DELAY**: next run = task finish time + delay (re-enqueued by worker thread after completion)
+- Debug logging includes `HH:mm:ss.SSS` timestamp + thread name at every lifecycle event: ENQUEUE, DISPATCH, EXECUTING, DONE, RE-ENQUEUE
+
 ## Project Structure
 
 ```
@@ -78,6 +88,7 @@ src/main/java/com/definit3/concurrency/
 ├── threadcommunication/      # wait, notify, producer-consumer
 ├── filereadwrite/            # Thread-safe file read/write with offset using ReentrantReadWriteLock
 ├── concurrentdatastructure/  # Searcher/Inserter/Deleter with ReadWriteLock + mutex
+├── taskscheduler/            # Multi-threaded task scheduler: one-time, fixed-rate, fixed-delay
 └── explicit/
     ├── lock/                 # ReentrantLock, tryLock, lockInterruptibly
     ├── lockfairness/         # Fair vs unfair lock ordering
