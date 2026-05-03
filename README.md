@@ -92,6 +92,15 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - `removeNode` cleans dependency edges in one direction only (dependencies' `dependents` lists) — dependents are guaranteed to also be deleted in the same pass
 - Lock strategy: `ReentrantReadWriteLock` — concurrent `findRecoveryChain` reads, exclusive writes for mutations
 
+### Job Scheduler with Dependency Graph
+- Executes jobs respecting a DAG of dependencies — a job runs only after all its dependencies complete
+- Kahn's algorithm initialized in constructor: `degree` map (unsatisfied deps per job) + `readyQueue` seeded with zero-degree jobs
+- `Job` holds `dependencies` (what it needs) and `dependents` (what it unblocks); carries a `Runnable` for actual work
+- `worker()` returns a `Runnable`: waits on `Condition` when `readyQueue` is empty, polls a job, executes outside lock, then decrements dependent degrees and signals when new jobs become ready
+- `remainingJobs` counter drives termination — when it hits 0, `condition.signalAll()` wakes all workers to exit
+- Lock strategy: single `ReentrantLock` + `Condition` guards `readyQueue`, `degree`, and `remainingJobs`; job execution happens outside the lock so workers run truly in parallel
+- `main` tests a 5-job DAG (1→3→5, 1+2→4→5) with 3 worker threads — Jobs 1 and 2 run in parallel first, then 3 and 4, then 5 last
+
 ### Multi-Threaded Task Scheduler
 - Supports one-time (ad-hoc), fixed-rate, and fixed-delay recurring task scheduling
 - Three-layer architecture: user thread → scheduler thread → worker thread pool
@@ -119,6 +128,7 @@ src/main/java/com/definit3/concurrency/
 ├── politicalbathroom/        # Political bathroom problem: categorical exclusion with anti-starvation
 ├── lrucache/                 # Thread-safe LRU cache: doubly linked list + HashMap + ReentrantLock
 ├── backupsytem/              # Backup dependency graph: registerBackup, addDependency, findRecoveryChain, expireBackup
+├── jobscheduler/             # DAG-based job scheduler: Kahn's algorithm, worker threads, ReentrantLock + Condition
 └── explicit/
     ├── lock/                 # ReentrantLock, tryLock, lockInterruptibly
     ├── lockfairness/         # Fair vs unfair lock ordering
