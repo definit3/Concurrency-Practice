@@ -75,6 +75,23 @@ Practicing multithreading and concurrency concepts from scratch. Covers thread l
 - Sleep (bathroom use) happens outside the lock; try-finally guarantees lock re-acquisition before cleanup
 - Debug logging shows WAITING / ENTER / EXIT with full state: occupied count, current party, consecutive counter, both waiting counts
 
+### LRU Cache (Thread-Safe)
+- Doubly linked list + `HashMap` for O(1) get and put
+- Sentinel `head`/`tail` nodes eliminate null checks in add/remove
+- `ReentrantLock` (fair) protects all operations atomically — check inside lock to prevent TOCTOU race
+- `get`: removes node and re-inserts at MRU (head) position under lock
+- `put`: handles update, new entry, and LRU eviction (`tail.prev`) as three distinct cases
+
+### Backup System with Dependency Graph
+- Models backups as a DAG: each node has `dependencies` (what it needs) and `dependents` (what needs it)
+- Each backup has `endTime` (when backup completed) + `retention` (how long to keep it); expires at `endTime + retention`
+- **`registerBackup`**: adds backup to map under `writeLock`
+- **`addDependency(from, to)`**: bidirectional edge linking under `writeLock`; null-guarded
+- **`findRecoveryChain`**: post-order DFS with `visited` set under `readLock` — handles multiple dependencies and shared ancestors; returns chain in application order (root → target)
+- **`expireBackup`**: DP memoization (`canDelete`) checks expiry + all dependents recursively; entire compute + delete phase under single `writeLock` to prevent TOCTOU race
+- `removeNode` cleans dependency edges in one direction only (dependencies' `dependents` lists) — dependents are guaranteed to also be deleted in the same pass
+- Lock strategy: `ReentrantReadWriteLock` — concurrent `findRecoveryChain` reads, exclusive writes for mutations
+
 ### Multi-Threaded Task Scheduler
 - Supports one-time (ad-hoc), fixed-rate, and fixed-delay recurring task scheduling
 - Three-layer architecture: user thread → scheduler thread → worker thread pool
@@ -100,6 +117,8 @@ src/main/java/com/definit3/concurrency/
 ├── concurrentdatastructure/  # Searcher/Inserter/Deleter with ReadWriteLock + mutex
 ├── taskscheduler/            # Multi-threaded task scheduler: one-time, fixed-rate, fixed-delay
 ├── politicalbathroom/        # Political bathroom problem: categorical exclusion with anti-starvation
+├── lrucache/                 # Thread-safe LRU cache: doubly linked list + HashMap + ReentrantLock
+├── backupsytem/              # Backup dependency graph: registerBackup, addDependency, findRecoveryChain, expireBackup
 └── explicit/
     ├── lock/                 # ReentrantLock, tryLock, lockInterruptibly
     ├── lockfairness/         # Fair vs unfair lock ordering
